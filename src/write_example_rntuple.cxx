@@ -105,6 +105,7 @@ int main(int argc, char **argv) {
       TruthInteraction truthInteraction;
       truthInteraction.id = nextTruthInteractionId++;
       truthInteraction.vtx = randomPosition();
+      double truthInteractionEnu = 0.0;
 
       const int nTruthParticles = truthPartCountDist(rng);
       truthInteraction.part.reserve(static_cast<std::size_t>(nTruthParticles));
@@ -126,7 +127,9 @@ int main(int argc, char **argv) {
 
         truthInteraction.part.push_back(truthParticle);
         truthParticleIds.push_back(truthParticle.id);
+        truthInteractionEnu += static_cast<double>(truthParticle.E);
       }
+      truthInteraction.Enu = static_cast<float>(std::max(0.02, truthInteractionEnu));
 
       truthInteractionIds.push_back(truthInteraction.id);
       mcEntry.interactions.push_back(truthInteraction);
@@ -139,6 +142,9 @@ int main(int argc, char **argv) {
       Interaction recoInteraction;
       recoInteraction.id = nextRecoInteractionId++;
       recoInteraction.vtx = smearVector(truthInteraction.vtx, vertexSmearDist);
+      const double interactionEnergyScale = 1.0 + energySmearFrac(rng);
+      recoInteraction.Enu = static_cast<float>(std::max(
+          0.02, static_cast<double>(truthInteraction.Enu) * interactionEnergyScale));
       recoInteraction.truth.push_back(truthInteraction.id);
       recoInteraction.truthOverlap.push_back(overlapDist(rng));
 
@@ -210,6 +216,7 @@ int main(int argc, char **argv) {
         Interaction fakeInteraction;
         fakeInteraction.id = nextRecoInteractionId++;
         fakeInteraction.vtx = randomPosition();
+        double fakeInteractionEnu = 0.0;
         const int nFakeParticles = fakePartCountDist(rng);
         fakeInteraction.part.reserve(static_cast<std::size_t>(nFakeParticles));
 
@@ -222,7 +229,8 @@ int main(int argc, char **argv) {
           fakeParticle.tgtA = tgtADist(rng);
           fakeParticle.score = scoreDist(rng) * 0.7f;
           fakeParticle.E = truthEnergyDist(rng);
-          fakeParticle.p = randomDirection() * static_cast<double>(fakeParticle.E);
+          fakeParticle.p =
+              randomDirection() * static_cast<double>(fakeParticle.E);
           fakeParticle.start = fakeInteraction.vtx + randomDirection() * 8.0;
           fakeParticle.end = fakeParticle.start + randomDirection() * lengthDist(rng);
           fakeParticle.contained = containsDist(rng);
@@ -231,7 +239,10 @@ int main(int argc, char **argv) {
           fakeParticle.recoType = chooseRecoType(fakeParticle.pdg);
           fakeParticle.EMethod = chooseEMethod(fakeParticle.recoType);
           fakeInteraction.part.push_back(fakeParticle);
+          fakeInteractionEnu += static_cast<double>(fakeParticle.E);
         }
+        fakeInteraction.Enu =
+            static_cast<float>(std::max(0.02, fakeInteractionEnu));
 
         collection.push_back(fakeInteraction);
       }

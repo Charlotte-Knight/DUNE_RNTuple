@@ -18,4 +18,25 @@
 #pragma link C++ class std::vector<TruthParticle>+;
 #pragma link C++ class std::vector<TruthInteraction>+;
 #pragma link C++ class std::vector<mc>+;
+
+// #pragma read                                  \
+//   sourceClass="Particle"                        \
+//   source="float E" \
+//   checksum="[0x9878e129]"                   \
+//   targetClass="Particle"                        \
+//   target="Enu"                                \
+//   embed="true"                                \
+//   include="iostream,cstdlib"                  \
+//   code="{ Enu = onfile.E; }"
+
+// #pragma read                                  \
+//   sourceClass="TruthParticle"                   \
+//   source="float E" \
+//   checksum="[0xc270898c]"                   \
+//   targetClass="TruthParticle"                   \
+//   target="Enu"                                \
+//   embed="true"                                \
+//   include="iostream,cstdlib"                  \
+//   code="{ Enu = onfile.E; }"
+
 #endif

@@ -23,7 +23,7 @@ Run the writer executable:
 
 This writes one RNTuple named `CAF` containing the `common` (reco) and `mc` (truth) fields.
 
-## Plot track lengths for DLP and Pandora
+## Plot track lengths and Enu for DLP and Pandora
 
 Run the plotting executable:
 
@@ -31,13 +31,45 @@ Run the plotting executable:
 ./build/plot_track_lengths \
   ./build/example_spills.root \
   ./build/track_lengths_dlp.png \
-  ./build/track_lengths_pandora.png
+  ./build/track_lengths_pandora.png \
+  ./build/enu_dlp.png \
+  ./build/enu_pandora.png
 ```
 
-This produces two PNG files:
+This produces four PNG files:
 
 - `build/track_lengths_dlp.png`
 - `build/track_lengths_pandora.png`
+- `build/enu_dlp.png`
+- `build/enu_pandora.png`
+
+## Plot muon energy resolution
+
+Run:
+
+```bash
+./build/plot_muon_energy_resolution \
+  ./build/example_spills.root \
+  ./build/muon_energy_resolution.png
+```
+
+This plots `(E_{reco} - E_{true}) / E_{true}` for muons using truth-matched
+reco particles across DLP and Pandora interactions.
+
+## Calculate Enu/containment selection efficiency
+
+Run:
+
+```bash
+./build/calculate_selection_efficiency ./build/example_spills.root
+```
+
+Selection used per interaction:
+
+- interaction-level `Enu > 2`
+- all primary particles are contained
+
+The script prints efficiency summaries for both DLP and Pandora.
 
 ## RBrowser
 

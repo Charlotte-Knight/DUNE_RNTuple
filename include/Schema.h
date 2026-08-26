@@ -45,6 +45,7 @@ struct Particle {
 
 struct Interaction {
   std::uint64_t id = 0;
+  float Enu = 0.f;
   V3 vtx;
   std::vector<Particle> part;
   std::vector<std::uint64_t> truth;
@@ -66,6 +67,7 @@ struct TruthParticle {
 
 struct TruthInteraction {
   std::uint64_t id = 0;
+  float Enu = 0.f;
   V3 vtx;
   std::vector<TruthParticle> part;
   std::vector<std::uint64_t> reco;

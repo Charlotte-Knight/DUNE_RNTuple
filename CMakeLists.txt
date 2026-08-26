@@ -69,3 +69,40 @@ target_link_libraries(plot_track_lengths PRIVATE
   ROOT::Gpad
   ROOT::Graf
 )
+
+add_executable(plot_muon_energy_resolution
+  src/plot_muon_energy_resolution.cxx
+  $<TARGET_OBJECTS:dune_schema_dict_obj>
+)
+
+target_include_directories(plot_muon_energy_resolution PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(plot_muon_energy_resolution PRIVATE
+  ROOT::Core
+  ROOT::GenVector
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::ROOTNTuple
+  ROOT::Hist
+  ROOT::Gpad
+  ROOT::Graf
+)
+
+add_executable(calculate_selection_efficiency
+  src/calculate_selection_efficiency.cxx
+  $<TARGET_OBJECTS:dune_schema_dict_obj>
+)
+
+target_include_directories(calculate_selection_efficiency PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(calculate_selection_efficiency PRIVATE
+  ROOT::Core
+  ROOT::GenVector
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::ROOTNTuple
+)
