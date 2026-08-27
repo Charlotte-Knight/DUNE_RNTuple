@@ -39,15 +39,15 @@ int main(int argc, char **argv) {
   for (auto entryId : reader->GetEntryRange()) {
     const auto commonEntry = commonView(entryId);
     for (const auto &interaction : commonEntry.dlp) {
+      dlpEnuHistogram.Fill(interaction.Enu);
       for (const auto &particle : interaction.part) {
         dlpHistogram.Fill((particle.end - particle.start).R());
-        dlpEnuHistogram.Fill(particle.E);
       }
     }
     for (const auto &interaction : commonEntry.pandora) {
+      pandoraEnuHistogram.Fill(interaction.Enu);
       for (const auto &particle : interaction.part) {
         pandoraHistogram.Fill((particle.end - particle.start).R());
-        pandoraEnuHistogram.Fill(particle.E);
       }
     }
   }

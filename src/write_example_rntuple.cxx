@@ -80,10 +80,10 @@ int main(int argc, char **argv) {
     return PartEMethod::kRange;
   };
 
-  std::uint64_t nextRecoInteractionId = 1;
-  std::uint64_t nextRecoParticleId = 1;
-  std::uint64_t nextTruthInteractionId = 1;
-  std::uint64_t nextTruthParticleId = 1;
+  std::uint64_t nextRecoInteractionId = 0;
+  std::uint64_t nextRecoParticleId = 0;
+  std::uint64_t nextTruthInteractionId = 0;
+  std::uint64_t nextTruthParticleId = 0;
 
   for (std::uint64_t spillIndex = 0; spillIndex < 13; ++spillIndex) {
     common commonEntry;
