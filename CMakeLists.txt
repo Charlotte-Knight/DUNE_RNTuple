@@ -10,23 +10,45 @@ include(${ROOT_USE_FILE})
 
 set(SCHEMA_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/Schema.h)
 set(LINKDEF_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/LinkDef.h)
+set(CLASS_SCHEMA_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/ClassSchema.h)
+set(CLASS_LINKDEF_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/ClassLinkDef.h)
 
 ROOT_GENERATE_DICTIONARY(G__DuneSchema
   ${SCHEMA_HEADER}
   LINKDEF ${LINKDEF_HEADER}
 )
 
+ROOT_GENERATE_DICTIONARY(G__DuneClassSchema
+  ${CLASS_SCHEMA_HEADER}
+  LINKDEF ${CLASS_LINKDEF_HEADER}
+)
+
 add_library(dune_schema_dict_obj OBJECT
   G__DuneSchema.cxx
+)
+
+add_library(dune_class_schema_dict_obj OBJECT
+  G__DuneClassSchema.cxx
 )
 
 target_include_directories(dune_schema_dict_obj PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_include_directories(dune_class_schema_dict_obj PUBLIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 target_link_libraries(dune_schema_dict_obj PUBLIC
   ROOT::Core
   ROOT::GenVector
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::ROOTNTuple
+)
+
+target_link_libraries(dune_class_schema_dict_obj PUBLIC
+  ROOT::Core
   ROOT::RIO
   ROOT::Tree
   ROOT::ROOTNTuple
@@ -44,6 +66,38 @@ target_include_directories(write_example_rntuple PRIVATE
 target_link_libraries(write_example_rntuple PRIVATE
   ROOT::Core
   ROOT::GenVector
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::ROOTNTuple
+)
+
+add_executable(write_example_class_rntuple
+  src/write_example_class_rntuple.cxx
+  $<TARGET_OBJECTS:dune_class_schema_dict_obj>
+)
+
+target_include_directories(write_example_class_rntuple PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(write_example_class_rntuple PRIVATE
+  ROOT::Core
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::ROOTNTuple
+)
+
+add_executable(summarize_class_vectors
+  src/summarize_class_vectors.cxx
+  $<TARGET_OBJECTS:dune_class_schema_dict_obj>
+)
+
+target_include_directories(summarize_class_vectors PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(summarize_class_vectors PRIVATE
+  ROOT::Core
   ROOT::RIO
   ROOT::Tree
   ROOT::ROOTNTuple

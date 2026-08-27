@@ -23,6 +23,25 @@ Run the writer executable:
 
 This writes one RNTuple named `CAF` containing the `common` (reco) and `mc` (truth) fields.
 
+## Generate an example RNTuple file with the class-based schema
+
+Run the alternative writer executable:
+
+```bash
+./build/write_example_class_rntuple ./build/example_spills_class_schema.root
+```
+
+This writes the same top-level `common` and `mc` fields, but uses
+[`ClassSchema.h`](./include/ClassSchema.h)'s `classschema::*` classes instead of
+the struct-based schema. The custom `classschema::V3` exposes methods like
+`.Mag()` and `.Unit()`.
+
+To verify readback and exercise those methods after deserialization:
+
+```bash
+./build/summarize_class_vectors ./build/example_spills_class_schema.root
+```
+
 ## Plot track lengths and Enu for DLP and Pandora
 
 Run the plotting executable:
