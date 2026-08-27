@@ -103,6 +103,60 @@ target_link_libraries(summarize_class_vectors PRIVATE
   ROOT::ROOTNTuple
 )
 
+add_executable(plot_track_lengths_class
+  src/plot_track_lengths_class.cxx
+  $<TARGET_OBJECTS:dune_class_schema_dict_obj>
+)
+
+target_include_directories(plot_track_lengths_class PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(plot_track_lengths_class PRIVATE
+  ROOT::Core
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::ROOTNTuple
+  ROOT::Hist
+  ROOT::Gpad
+  ROOT::Graf
+)
+
+add_executable(plot_muon_energy_resolution_class
+  src/plot_muon_energy_resolution_class.cxx
+  $<TARGET_OBJECTS:dune_class_schema_dict_obj>
+)
+
+target_include_directories(plot_muon_energy_resolution_class PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(plot_muon_energy_resolution_class PRIVATE
+  ROOT::Core
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::ROOTNTuple
+  ROOT::Hist
+  ROOT::Gpad
+  ROOT::Graf
+)
+
+add_executable(calculate_selection_efficiency_class
+  src/calculate_selection_efficiency_class.cxx
+  $<TARGET_OBJECTS:dune_class_schema_dict_obj>
+)
+
+target_include_directories(calculate_selection_efficiency_class PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(calculate_selection_efficiency_class PRIVATE
+  ROOT::Core
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::ROOTNTuple
+)
+
 add_executable(plot_track_lengths
   src/plot_track_lengths.cxx
   $<TARGET_OBJECTS:dune_schema_dict_obj>

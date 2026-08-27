@@ -62,6 +62,21 @@ This produces four PNG files:
 - `build/enu_dlp.png`
 - `build/enu_pandora.png`
 
+### Class-based version
+
+Run the class-based variant using the `ClassSchema.h` types:
+
+```bash
+./build/plot_track_lengths_class \
+  ./build/example_spills_class_schema.root \
+  ./build/track_lengths_dlp_class.png \
+  ./build/track_lengths_pandora_class.png \
+  ./build/enu_dlp_class.png \
+  ./build/enu_pandora_class.png
+```
+
+This uses the custom `classschema::Particle::TrackLength()` method to compute track lengths.
+
 ## Plot muon energy resolution
 
 Run:
@@ -74,6 +89,16 @@ Run:
 
 This plots `(E_{reco} - E_{true}) / E_{true}` for muons using truth-matched
 reco particles across DLP and Pandora interactions.
+
+### Class-based version
+
+Run:
+
+```bash
+./build/plot_muon_energy_resolution_class \
+  ./build/example_spills_class_schema.root \
+  ./build/muon_energy_resolution_class.png
+```
 
 ## Calculate Enu/containment selection efficiency
 
@@ -89,6 +114,16 @@ Selection used per interaction:
 - all primary particles are contained
 
 The script prints efficiency summaries for both DLP and Pandora.
+
+### Class-based version
+
+Run:
+
+```bash
+./build/calculate_selection_efficiency_class ./build/example_spills_class_schema.root
+```
+
+Produces identical selection efficiency output using the class-based schema.
 
 ## RBrowser
 
