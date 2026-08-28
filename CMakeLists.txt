@@ -178,6 +178,48 @@ target_link_libraries(plot_track_lengths PRIVATE
   ROOT::Graf
 )
 
+add_executable(plot_track_lengths_simple
+  src/plot_track_lengths_simple.cxx
+  $<TARGET_OBJECTS:dune_schema_dict_obj>
+)
+
+target_include_directories(plot_track_lengths_simple PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(plot_track_lengths_simple PRIVATE
+  ROOT::Core
+  ROOT::GenVector
+  ROOT::ROOTDataFrame
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::ROOTNTuple
+  ROOT::Hist
+  ROOT::Gpad
+  ROOT::Graf
+)
+
+add_executable(plot_track_lengths_simple_better
+  src/plot_track_lengths_simple_better.cxx
+  $<TARGET_OBJECTS:dune_schema_dict_obj>
+)
+
+target_include_directories(plot_track_lengths_simple_better PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(plot_track_lengths_simple_better PRIVATE
+  ROOT::Core
+  ROOT::GenVector
+  ROOT::ROOTDataFrame
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::ROOTNTuple
+  ROOT::Hist
+  ROOT::Gpad
+  ROOT::Graf
+)
+
 add_executable(plot_muon_energy_resolution
   src/plot_muon_energy_resolution.cxx
   $<TARGET_OBJECTS:dune_schema_dict_obj>

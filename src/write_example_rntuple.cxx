@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
   std::uint64_t nextTruthInteractionId = 0;
   std::uint64_t nextTruthParticleId = 0;
 
-  for (std::uint64_t spillIndex = 0; spillIndex < 13; ++spillIndex) {
+  for (std::uint64_t spillIndex = 0; spillIndex < 1300; ++spillIndex) {
     common commonEntry;
     commonEntry.id = 1000 + spillIndex;
 
