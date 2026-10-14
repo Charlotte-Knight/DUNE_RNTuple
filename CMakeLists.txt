@@ -13,9 +13,16 @@ set(LINKDEF_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/LinkDef.h)
 set(CLASS_SCHEMA_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/ClassSchema.h)
 set(CLASS_LINKDEF_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/ClassLinkDef.h)
 
+set(SCHEMA_DICT_DEPENDENCIES ROOT::ROOTVecOps)
+if(TARGET VDT::VDT)
+  # rootcling does not collect transitive include paths from dependencies.
+  list(APPEND SCHEMA_DICT_DEPENDENCIES VDT::VDT)
+endif()
+
 ROOT_GENERATE_DICTIONARY(G__DuneSchema
   ${SCHEMA_HEADER}
   LINKDEF ${LINKDEF_HEADER}
+  DEPENDENCIES ${SCHEMA_DICT_DEPENDENCIES}
 )
 
 ROOT_GENERATE_DICTIONARY(G__DuneClassSchema
@@ -42,6 +49,7 @@ target_include_directories(dune_class_schema_dict_obj PUBLIC
 target_link_libraries(dune_schema_dict_obj PUBLIC
   ROOT::Core
   ROOT::GenVector
+  ROOT::ROOTVecOps
   ROOT::RIO
   ROOT::Tree
   ROOT::ROOTNTuple
@@ -66,6 +74,7 @@ target_include_directories(write_example_rntuple PRIVATE
 target_link_libraries(write_example_rntuple PRIVATE
   ROOT::Core
   ROOT::GenVector
+  ROOT::ROOTVecOps
   ROOT::RIO
   ROOT::Tree
   ROOT::ROOTNTuple
@@ -169,6 +178,29 @@ target_include_directories(plot_track_lengths PRIVATE
 target_link_libraries(plot_track_lengths PRIVATE
   ROOT::Core
   ROOT::GenVector
+  ROOT::ROOTVecOps
+  ROOT::ROOTDataFrame
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::ROOTNTuple
+  ROOT::Hist
+  ROOT::Gpad
+  ROOT::Graf
+)
+
+add_executable(plot_track_lengths_rdf
+  src/plot_track_lengths_rdf.cxx
+  $<TARGET_OBJECTS:dune_schema_dict_obj>
+)
+
+target_include_directories(plot_track_lengths_rdf PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(plot_track_lengths_rdf PRIVATE
+  ROOT::Core
+  ROOT::GenVector
+  ROOT::ROOTVecOps
   ROOT::ROOTDataFrame
   ROOT::RIO
   ROOT::Tree
@@ -190,6 +222,7 @@ target_include_directories(plot_track_lengths_simple PRIVATE
 target_link_libraries(plot_track_lengths_simple PRIVATE
   ROOT::Core
   ROOT::GenVector
+  ROOT::ROOTVecOps
   ROOT::ROOTDataFrame
   ROOT::RIO
   ROOT::Tree
@@ -197,6 +230,26 @@ target_link_libraries(plot_track_lengths_simple PRIVATE
   ROOT::Hist
   ROOT::Gpad
   ROOT::Graf
+)
+
+add_executable(plot_track_lengths_simple_rdf
+  src/plot_track_lengths_simple_rdf.cxx
+  $<TARGET_OBJECTS:dune_schema_dict_obj>
+)
+
+target_include_directories(plot_track_lengths_simple_rdf PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(plot_track_lengths_simple_rdf PRIVATE
+  ROOT::Core
+  ROOT::GenVector
+  ROOT::ROOTVecOps
+  ROOT::ROOTDataFrame
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::ROOTNTuple
+  ROOT::Hist
 )
 
 add_executable(plot_track_lengths_simple_better
@@ -211,6 +264,7 @@ target_include_directories(plot_track_lengths_simple_better PRIVATE
 target_link_libraries(plot_track_lengths_simple_better PRIVATE
   ROOT::Core
   ROOT::GenVector
+  ROOT::ROOTVecOps
   ROOT::ROOTDataFrame
   ROOT::RIO
   ROOT::Tree
@@ -232,6 +286,7 @@ target_include_directories(plot_muon_energy_resolution PRIVATE
 target_link_libraries(plot_muon_energy_resolution PRIVATE
   ROOT::Core
   ROOT::GenVector
+  ROOT::ROOTVecOps
   ROOT::RIO
   ROOT::Tree
   ROOT::ROOTNTuple
@@ -252,6 +307,7 @@ target_include_directories(calculate_selection_efficiency PRIVATE
 target_link_libraries(calculate_selection_efficiency PRIVATE
   ROOT::Core
   ROOT::GenVector
+  ROOT::ROOTVecOps
   ROOT::RIO
   ROOT::Tree
   ROOT::ROOTNTuple

@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
       }
     }
 
-    auto fillFromRecoInteractions = [&](const std::vector<Interaction> &interactions) {
+    auto fillFromRecoInteractions = [&](const RVec<Interaction> &interactions) {
       for (const auto &interaction : interactions) {
         for (const auto &particle : interaction.part) {
           if (std::abs(particle.pdg) != 13 || particle.E <= 0.f) {

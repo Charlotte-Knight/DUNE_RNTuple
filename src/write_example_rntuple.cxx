@@ -210,7 +210,7 @@ int main(int argc, char **argv) {
       return recoInteraction;
     };
 
-    auto addFakeRecoInteractions = [&](std::vector<Interaction> &collection,
+    auto addFakeRecoInteractions = [&](RVec<Interaction> &collection,
                                        int nFakes) {
       for (int fakeIndex = 0; fakeIndex < nFakes; ++fakeIndex) {
         Interaction fakeInteraction;

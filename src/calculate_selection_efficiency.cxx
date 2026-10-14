@@ -32,7 +32,7 @@ bool PassesSelection(const Interaction &interaction) {
   return hasPrimary;
 }
 
-void Accumulate(const std::vector<Interaction> &interactions,
+void Accumulate(const RVec<Interaction> &interactions,
                 SelectionCounters &counters) {
   for (const auto &interaction : interactions) {
     ++counters.totalInteractions;

@@ -1,36 +1,30 @@
+#include <chrono>
 #include <iostream>
 #include <string>
 
 #include <ROOT/RNTupleReader.hxx>
-#include <TCanvas.h>
 #include <TH1D.h>
-#include <TROOT.h>
-#include <TFile.h>
 
 #include "Schema.h"
-
-#include <chrono>
-#include <iostream>
 
 int main(int argc, char **argv) {
   const std::string inputPath =
       (argc > 1) ? argv[1] : "build/example_spills.root";
-  const std::string dlpOutputImage =
-      (argc > 2) ? argv[2] : "build/track_lengths_dlp.png";
-
   auto reader = ROOT::RNTupleReader::Open("CAF", inputPath);
-  auto partView = reader->GetView<common>("common");
+  auto dlpView = reader->GetCollectionView("common.dlp");
+  auto particles = dlpView.GetCollectionView("_0.part");
+  auto startView = particles.GetView<V3>("_0.start");
+  auto endView = particles.GetView<V3>("_0.end");
 
   TH1D dlpHistogram("hTrackLengthDlp", "DLP track lengths;Length;Particles", 100,
                     0.0, 300.0);
   
   const auto loopStart = std::chrono::steady_clock::now();
 
-  for (auto i : reader->GetEntryRange()) {
-    const auto commonEntry = partView(i);
-    for (const auto &interaction : commonEntry.dlp) {
-      for (const auto &particle : interaction.part) {
-        dlpHistogram.Fill((particle.end - particle.start).R());
+  for (auto entryId : reader->GetEntryRange()) {
+    for (auto interactionId : dlpView.GetCollectionRange(entryId)) {
+      for (auto particleId : particles.GetCollectionRange(interactionId)) {
+        dlpHistogram.Fill((endView(particleId) - startView(particleId)).R());
       }
     }
   }
