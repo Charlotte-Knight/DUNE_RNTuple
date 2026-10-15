@@ -5,8 +5,11 @@
 #include <vector>
 
 #include <Math/Vector3D.h>
+#include <ROOT/RVec.hxx>
 
 using V3 = ROOT::Math::XYZVector;
+template <typename T>
+using RVec = ROOT::VecOps::RVec<T>;
 
 enum class PartEMethod : std::uint8_t {
   kUnknownMethod = 0,
@@ -38,18 +41,18 @@ struct Particle {
   float walldist = 0.f;
   RecoObjType recoType = RecoObjType::kUnknownRecoObj;
   std::uint64_t parent = 0;
-  std::vector<std::uint64_t> children;
-  std::vector<std::uint64_t> truth;
-  std::vector<float> truthOverlap;
+  RVec<std::uint64_t> children;
+  RVec<std::uint64_t> truth;
+  RVec<float> truthOverlap;
 };
 
 struct Interaction {
   std::uint64_t id = 0;
   float Enu = 0.f;
   V3 vtx;
-  std::vector<Particle> part;
-  std::vector<std::uint64_t> truth;
-  std::vector<float> truthOverlap;
+  RVec<Particle> part;
+  RVec<std::uint64_t> truth;
+  RVec<float> truthOverlap;
 };
 
 struct TruthParticle {
@@ -62,28 +65,28 @@ struct TruthParticle {
   V3 start;
   V3 end;
   std::uint64_t parent = 0;
-  std::vector<std::uint64_t> children;
+  RVec<std::uint64_t> children;
 };
 
 struct TruthInteraction {
   std::uint64_t id = 0;
   float Enu = 0.f;
   V3 vtx;
-  std::vector<TruthParticle> part;
-  std::vector<std::uint64_t> reco;
-  std::vector<float> recoOverlap;
+  RVec<TruthParticle> part;
+  RVec<std::uint64_t> reco;
+  RVec<float> recoOverlap;
   // more fields to be added here to catch up with current CAF
 };
 
 struct common {
   std::uint64_t id = 0;
-  std::vector<Interaction> dlp;
-  std::vector<Interaction> pandora;
+  RVec<Interaction> dlp;
+  RVec<Interaction> pandora;
 };
 
 struct mc {
   std::uint64_t id = 0;
-  std::vector<TruthInteraction> interactions;
+  RVec<TruthInteraction> interactions;
 };
 
 #endif

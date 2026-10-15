@@ -13,6 +13,7 @@
 #include <ROOT/RNTupleWriter.hxx>
 
 #include "Schema.h"
+#include "ExampleConfig.h"
 
 int main(int argc, char **argv) {
   const std::string outputPath = (argc > 1) ? argv[1] : "example_spills.root";
@@ -23,7 +24,7 @@ int main(int argc, char **argv) {
   auto writer = ROOT::RNTupleWriter::Recreate(std::move(model), "CAF",
                                               outputPath);
 
-  std::mt19937_64 rng(0xD00E2026ULL);
+  std::mt19937_64 rng(example::kSeed);
 
   std::uniform_real_distribution<double> xyDist(-500.0, 500.0);
   std::uniform_real_distribution<double> zDist(0.0, 1200.0);
@@ -85,7 +86,7 @@ int main(int argc, char **argv) {
   std::uint64_t nextTruthInteractionId = 0;
   std::uint64_t nextTruthParticleId = 0;
 
-  for (std::uint64_t spillIndex = 0; spillIndex < 1300; ++spillIndex) {
+  for (std::uint64_t spillIndex = 0; spillIndex < example::kSpillCount; ++spillIndex) {
     common commonEntry;
     commonEntry.id = 1000 + spillIndex;
 

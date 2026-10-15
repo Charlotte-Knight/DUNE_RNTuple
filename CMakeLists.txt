@@ -131,6 +131,24 @@ target_link_libraries(plot_track_lengths_class PRIVATE
   ROOT::Graf
 )
 
+foreach(variant IN ITEMS rdf simple simple_better simple_rdf)
+  set(target plot_track_lengths_${variant}_class)
+  add_executable(${target}
+    src/${target}.cxx
+    $<TARGET_OBJECTS:dune_class_schema_dict_obj>
+  )
+  target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+  target_link_libraries(${target} PRIVATE
+    ROOT::Core ROOT::RIO ROOT::Tree ROOT::ROOTNTuple ROOT::Hist
+  )
+  if(variant MATCHES "rdf")
+    target_link_libraries(${target} PRIVATE ROOT::ROOTVecOps ROOT::ROOTDataFrame)
+  endif()
+  if(variant STREQUAL "rdf")
+    target_link_libraries(${target} PRIVATE ROOT::Gpad ROOT::Graf)
+  endif()
+endforeach()
+
 add_executable(plot_muon_energy_resolution_class
   src/plot_muon_energy_resolution_class.cxx
   $<TARGET_OBJECTS:dune_class_schema_dict_obj>
@@ -312,3 +330,24 @@ target_link_libraries(calculate_selection_efficiency PRIVATE
   ROOT::Tree
   ROOT::ROOTNTuple
 )
+
+include(CTest)
+if(BUILD_TESTING)
+  add_executable(compare_track_length_schemas
+    tests/compare_track_length_schemas.cxx
+  )
+  target_link_libraries(compare_track_length_schemas PRIVATE
+    dune_schema_dict_obj dune_class_schema_dict_obj ROOT::ROOTDataFrame ROOT::Hist
+  )
+  add_test(NAME generate_struct_comparison
+    COMMAND write_example_rntuple ${CMAKE_CURRENT_BINARY_DIR}/comparison_struct.root)
+  add_test(NAME generate_class_comparison
+    COMMAND write_example_class_rntuple ${CMAKE_CURRENT_BINARY_DIR}/comparison_class.root)
+  set_tests_properties(generate_struct_comparison generate_class_comparison
+    PROPERTIES FIXTURES_SETUP comparison_inputs)
+  add_test(NAME compare_track_length_schemas COMMAND compare_track_length_schemas
+    ${CMAKE_CURRENT_BINARY_DIR}/comparison_struct.root
+    ${CMAKE_CURRENT_BINARY_DIR}/comparison_class.root)
+  set_tests_properties(compare_track_length_schemas
+    PROPERTIES FIXTURES_REQUIRED comparison_inputs)
+endif()

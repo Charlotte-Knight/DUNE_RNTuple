@@ -1,3 +1,4 @@
+#include <chrono>
 #include <iostream>
 #include <string>
 
@@ -36,6 +37,7 @@ int main(int argc, char **argv) {
   TH1D pandoraEnuHistogram("hEnuPandora", "Pandora Enu;Enu;Particles", 100, 0.0,
                            10.0);
 
+  const auto loopStart = std::chrono::steady_clock::now();
   for (auto entryId : reader->GetEntryRange()) {
     const auto commonEntry = commonView(entryId);
     for (const auto &interaction : commonEntry.dlp) {
@@ -51,6 +53,11 @@ int main(int argc, char **argv) {
       }
     }
   }
+
+  const auto loopEnd = std::chrono::steady_clock::now();
+  const std::chrono::duration<double> loopDuration = loopEnd - loopStart;
+  std::cout << "Event-processing loop execution time: "
+            << loopDuration.count() << " s" << std::endl;
 
   gROOT->SetBatch(kTRUE);
   TCanvas dlpCanvas("cTrackLengthDlp", "DLP track lengths", 900, 600);
